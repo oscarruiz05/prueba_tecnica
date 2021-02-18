@@ -10,11 +10,16 @@ use Illuminate\Support\Facades\File;
 class DatosController extends Controller
 {
     public function store(Request $request){
-        $file_name = $request->file;
+        if($request->file){
+            $file_name = $request->file;
 
-        $contents = File::get($file_name);
+            $contents = File::get($file_name);
 
-        $datos = explode(",", $contents);
+            $datos = explode(",", $contents);
+        }else{
+            return redirect()->back()->with(['create' => 0, 'mensaje' => 'No existe archivo']);
+        }
+        
 
         if($datos[0] && $datos[3]){
             $prueba = Prueba::create([
@@ -23,6 +28,7 @@ class DatosController extends Controller
                 'apellido' => $datos[2],
                 'codigo' => $datos[3]
             ]);
+            // dd($prueba);
             return redirect()->back()->with(['create' => 1, 'mensaje' => 'El archivo se procesó correctamente']);
         }else{
             return redirect()->back()->with(['create' => 0, 'mensaje' => 'El archivo no tiene formato correcto']);

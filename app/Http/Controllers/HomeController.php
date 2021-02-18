@@ -15,7 +15,7 @@ class HomeController extends Controller
     {
 
         $datos = Prueba::all();
-    //    dd($en_espera);
+        
         return view('home', compact('datos'));
     }
 
